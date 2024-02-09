@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const notesList = document.getElementById('notes-list');
+            const titleInput = document.getElementById('note-title');
+            const textInput = document.getElementById('note-text');
+            const saveButton = document.getElementById('save-note');
+            const newNoteButton = document.getElementById('new-note');
+            const previewTitle = document.getElementById('preview-title');
+            const previewText = document.getElementById('preview-text');
+
+            function loadNotes() {
+                fetch('/api/notes')
+                    .then(response => response.json())
+                    .then(data => {
+                        notesList.innerHTML = '';
+                        data.forEach(note => {
+                            const li = document.createElement('li');
+                            li.textContent = note.title;
+                            notesList.appendChild(li);
+                        });
+                    });
+            }
+
+            function updatePreview() {
+                previewTitle.textContent = titleInput.value || 'Note Title Preview';
+                previewText.textContent = textInput.value || 'Note text preview will appear here...';
+            }
+
+            titleInput.addEventListener('input', updatePreview);
+            textInput.addEventListener('input', updatePreview);
+
+            saveButton.onclick = function() {
+                const title = titleInput.value;
+                const text = textInput.value;
+                fetch('/api/notes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ title, text }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    titleInput.value = '';
+                    textInput.value = '';
+                    loadNotes(); // Reload notes
+                    updatePreview(); // Reset preview
+                });
+            };
+
+            newNoteButton.onclick = function() {
+                titleInput.value = '';
+                textInput.value = '';
+                updatePreview(); // Reset preview
+            };
+
+            loadNotes(); // Initial load of notes
+            updatePreview(); // Initial preview setup
+        });
+    </script>
+</head>
+<body>
+    <h1>Notes</h1>
+    <div id="notes-section">
+        <ul id="notes-list">
+            <!-- Notes will be listed here -->
+        </ul>
+        <div>
+            <input type="text" id="note-title" placeholder="Note Title">
+            <textarea id="note-text" placeholder="Note Text"></textarea>
+            <button id="save-note">Save Note</button>
+            <button id="new-note">New Note</button>
+        </div>
+    </div>
+    <div id="current-note-preview">
+        <h2>Current Note Preview</h2>
+        <h3 id="preview-title">Note Title Preview</h3>
+        <p id="preview-text">Note text preview will appear here...</p>
+    </div>
+</body>
+</html>
