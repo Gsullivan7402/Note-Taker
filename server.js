@@ -1,29 +1,55 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
-
+const fs = require('fs');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = 3000;
+
+// Path to the JSON file where notes will be stored
+const NOTES_FILE = './notes.json';
 
 app.use(bodyParser.json());
-app.use(express.static('public')); // Serve static files
+app.use(express.static('public'));
 
-let notes = []; // In-memory storage for notes
+// Function to read notes from file
+function readNotes() {
+    try {
+        const data = fs.readFileSync(NOTES_FILE, 'utf8');
+        return JSON.parse(data);
+    } catch (err) {
+        console.error(err);
+        return []; // Return an empty array if there's an error (e.g., file doesn't exist)
+    }
+}
 
-// API to get all notes
+// Function to write notes to file
+function writeNotes(notes) {
+    fs.writeFileSync(NOTES_FILE, JSON.stringify(notes, null, 2), 'utf8');
+}
+
+// GET endpoint to fetch all notes
 app.get('/api/notes', (req, res) => {
-    res.json(notes);
+    res.json(readNotes());
 });
 
-// API to create a new note
+// POST endpoint to create a new note
 app.post('/api/notes', (req, res) => {
-    const { title, text } = req.body;
-    const newNote = { id: uuidv4(), title, text };
+    const notes = readNotes();
+    const newNote = { id: uuidv4(), title: req.body.title, text: req.body.text };
     notes.push(newNote);
+    writeNotes(notes);
     res.json(newNote);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+// DELETE endpoint to delete a note by ID
+app.delete('/api/notes/:id', (req, res) => {
+    let notes = readNotes();
+    notes = notes.filter(note => note.id !== req.params.id);
+    writeNotes(notes);
+    res.status(204).send();
 });
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
+
