@@ -2,9 +2,9 @@
   "name": "note-taker",
   "version": "1.0.0",
   "description": "A simple note-taking app built with Express.js",
-  "main": "app.js",
+  "main": "js.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node js.js",
     "dev": "nodemon app.js",
     "test": "echo \"Error: no tests specified\" && exit 1"
   },
