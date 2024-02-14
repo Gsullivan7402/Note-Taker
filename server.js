@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
 const app = express();
@@ -8,7 +7,9 @@ const PORT = 3000;
 // Path to the JSON file where notes will be stored
 const NOTES_FILE = './notes.json';
 
-app.use(bodyParser.json());
+// Use Express's built-in middleware for parsing application/json
+app.use(express.json());
+// Serve static files from 'public' directory
 app.use(express.static('public'));
 
 // Function to read notes from file
@@ -52,4 +53,3 @@ app.delete('/api/notes/:id', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
-
