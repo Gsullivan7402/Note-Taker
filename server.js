@@ -12,6 +12,10 @@ app.use(express.json());
 // Serve static files from 'public' directory
 app.use(express.static('public'));
 
+app.get('/', (req, res) => {
+    res.send('<h1>Welcome to My Note-Taking App</h1>');
+  });
+  
 // Function to read notes from file
 function readNotes() {
     try {
