@@ -5,7 +5,7 @@
   "main": "js.js",
   "scripts": {
     "start": "node js.js",
-    "dev": "nodemon app.js",
+    "dev": "nodemon js.js",
     "test": "echo \"Error: no tests specified\" && exit 1"
   },
   "keywords": ["note-taking", "express", "nodejs"],
