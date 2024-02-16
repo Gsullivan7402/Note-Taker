@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const notesList = document.getElementById('notes-list');
     const newNoteButton = document.getElementById('new-note');
     const saveNoteButton = document.getElementById('save-note');
-    // const deleteNoteButton = document.getElementById('delete-note'); // Commented out as it's not used
+    const deleteNoteButton = document.getElementById('delete-note'); 
     const noteForm = document.getElementById('note-form');
     const titleInput = document.getElementById('note-title');
     const textInput = document.getElementById('note-text');
