@@ -1,6 +1,7 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs');
+const path = require('path'); // Include the path module
 const app = express();
 const PORT = 3000;
 
@@ -13,9 +14,10 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.send('<h1>Welcome to My Note-Taking App</h1>');
-  });
-  
+    // Corrected to sendFile and properly use path.join to reference index.html
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Function to read notes from file
 function readNotes() {
     try {
