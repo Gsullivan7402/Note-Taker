@@ -25,6 +25,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 attachDeleteEventListeners(); // Attach event listeners to the delete buttons
             });
     }
+
+    newNoteButton.onclick = function() {
+        noteForm.style.display = 'block'; // Show the form for a new note
+        titleInput.value = '';
+        textInput.value = '';
+        editingNoteId = null; // Reset editing note ID
+    };
+
     
     function attachDeleteEventListeners() {
         document.querySelectorAll('.delete-note').forEach(button => {
@@ -49,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = titleInput.value;
         const text = textInput.value;
         const note = { title, text };
+        console.log('Saving note...');
 
         // If editingNoteId is null, it's a new note; otherwise, it's an update (but update logic is not implemented here)
         fetch('/api/notes', {
@@ -64,13 +73,6 @@ document.addEventListener('DOMContentLoaded', function() {
             noteForm.style.display = 'none'; // Hide the form after saving
         });
     }
-
-    newNoteButton.onclick = function() {
-        noteForm.style.display = 'block'; // Show the form for a new note
-        titleInput.value = '';
-        textInput.value = '';
-        editingNoteId = null; // Reset editing note ID
-    };
 
     saveNoteButton.onclick = saveNote;
 
