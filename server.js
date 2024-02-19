@@ -10,8 +10,10 @@ const NOTES_FILE = './notes.json';
 
 // Use Express's built-in middleware for parsing application/json
 app.use(express.json());
-// Serve static files from 'public' directory
+
 app.use(express.static('./'));
+
+app.use(express.static('public'));
 
 
 app.get('/', (req, res) => {
