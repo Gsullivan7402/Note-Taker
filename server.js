@@ -15,6 +15,12 @@ app.use(express.static('./'));
 
 app.use(express.static('public'));
 
+app.use((req, res, next) => {
+    if (req.path.endsWith('.css')) {
+        res.type('text/css');
+    }
+    next();
+});
 
 app.get('/', (req, res) => {
     // Corrected to sendFile and properly use path.join to reference index.html
