@@ -11,16 +11,18 @@ const NOTES_FILE = './notes.json';
 // Use Express's built-in middleware for parsing application/json
 app.use(express.json());
 
-app.use(express.static('./'));
-
-app.use(express.static('public'));
-
 app.use((req, res, next) => {
     if (req.path.endsWith('.css')) {
         res.type('text/css');
     }
     next();
 });
+
+app.use(express.static('./'));
+
+app.use(express.static('public'));
+
+
 
 app.get('/', (req, res) => {
     // Corrected to sendFile and properly use path.join to reference index.html
